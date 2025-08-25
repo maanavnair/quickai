@@ -2,6 +2,9 @@
 import OpenAI from "openai";
 import sql from "../configs/db.js";
 import { clerkClient } from "@clerk/express";
+import axios from "axios";
+import { v2 as cloudinary } from "cloudinary";
+import FormData from "form-data";
 
 const AI = new OpenAI({
     apiKey: process.env.GEMINI_API_KEY,
@@ -103,6 +106,53 @@ export const generateBlogTitle = async (req, res) => {
         res.json({
             sucess: true,
             content
+        });
+
+    }catch(error){
+        console.log(error.message);
+        res.json({
+            sucess: false,
+            message: error.message
+        });
+    }
+}
+
+export const generateImage = async (req, res) => {
+    try{
+        const { userId } = req.auth();
+        const { prompt, publish } = req.body;
+        const plan = req.plan;
+
+        if(plan !== 'premium'){
+            return res.json({
+                sucess: false,
+                message: "This feature is only available for premium subscriptions."
+            });
+        }
+
+        const formData = new FormData();
+        formData.append('prompt', prompt);
+        const { data } = await axios.post("https://clipdrop-api.co/text-to-image/v1", formData, {
+            headers: {
+                'x-api-key': process.env.CLIPDROP_API_KEY,
+            },
+            responseType: "arraybuffer",
+        });
+
+        const base64Data = Buffer.from(data, 'binary').toString('base64');
+        const uploadStr = `data:image/png;base64,${base64Data}`;
+        const { secure_url } = await cloudinary.uploader.upload(uploadStr);
+
+        console.log("this is running 3")
+
+        await sql` INSERT INTO creations (user_id, prompt, content, type, publish)
+        VALUES (${userId}, ${prompt}, ${secure_url}, 'image', ${publish ?? false})`;
+
+        console.log("this is running 4");
+
+        res.json({
+            sucess: true,
+            content: secure_url
         });
 
     }catch(error){
