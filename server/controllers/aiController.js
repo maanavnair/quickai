@@ -22,7 +22,7 @@ export const generateArticle = async (req, res) => {
 
         if(plan !== 'premium' && free_usage >= 10){
             return res.json({
-                sucess: false,
+                success: false,
                 message: "Limit reached. Upgrade to continue."
             });
         }
@@ -53,14 +53,14 @@ export const generateArticle = async (req, res) => {
         }
 
         res.json({
-            sucess: true,
+            success: true,
             content
         });
 
     }catch(error){
         console.log(error.message);
         res.json({
-            sucess: false,
+            success: false,
             message: error.message
         });
     }
@@ -75,7 +75,7 @@ export const generateBlogTitle = async (req, res) => {
 
         if(plan !== 'premium' && free_usage >= 10){
             return res.json({
-                sucess: false,
+                success: false,
                 message: "Limit reached. Upgrade to continue."
             });
         }
@@ -106,14 +106,14 @@ export const generateBlogTitle = async (req, res) => {
         }
 
         res.json({
-            sucess: true,
+            success: true,
             content
         });
 
     }catch(error){
         console.log(error.message);
         res.json({
-            sucess: false,
+            success: false,
             message: error.message
         });
     }
@@ -127,7 +127,7 @@ export const generateImage = async (req, res) => {
 
         if(plan !== 'premium'){
             return res.json({
-                sucess: false,
+                success: false,
                 message: "This feature is only available for premium subscriptions."
             });
         }
@@ -149,14 +149,14 @@ export const generateImage = async (req, res) => {
         VALUES (${userId}, ${prompt}, ${secure_url}, 'image', ${publish ?? false})`;
 
         res.json({
-            sucess: true,
+            success: true,
             content: secure_url
         });
 
     }catch(error){
         console.log(error.message);
         res.json({
-            sucess: false,
+            success: false,
             message: error.message
         });
     }
@@ -170,7 +170,7 @@ export const removeImageBackground = async (req, res) => {
 
         if(plan !== 'premium'){
             return res.json({
-                sucess: false,
+                success: false,
                 message: "This feature is only available for premium subscriptions."
             });
         }
@@ -188,14 +188,14 @@ export const removeImageBackground = async (req, res) => {
         VALUES (${userId}, 'Remove background from image', ${secure_url}, 'image')`;
 
         res.json({
-            sucess: true,
+            success: true,
             content: secure_url
         });
 
     }catch(error){
         console.log(error.message);
         res.json({
-            sucess: false,
+            success: false,
             message: error.message
         });
     }
@@ -210,7 +210,7 @@ export const removeImageObject = async (req, res) => {
 
         if(plan !== 'premium'){
             return res.json({
-                sucess: false,
+                success: false,
                 message: "This feature is only available for premium subscriptions."
             });
         }
@@ -226,14 +226,14 @@ export const removeImageObject = async (req, res) => {
         VALUES (${userId}, ${`Removed ${object} from image`}, ${imageUrl}, 'image')`;
 
         res.json({
-            sucess: true,
+            success: true,
             content: imageUrl
         });
 
     }catch(error){
         console.log(error.message);
         res.json({
-            sucess: false,
+            success: false,
             message: error.message
         });
     }
@@ -247,14 +247,14 @@ export const resumeReview = async (req, res) => {
 
         if(plan !== 'premium'){
             return res.json({
-                sucess: false,
+                success: false,
                 message: "This feature is only available for premium subscriptions."
             });
         }
 
         if(resume.size() > 5 * 1024 * 1024){
             return res.json({
-                sucess: false,
+                success: false,
                 message: 'Resume file size exceeds allowed size (5MB).'
             });
         }
@@ -283,14 +283,14 @@ export const resumeReview = async (req, res) => {
         VALUES (${userId}, 'Review the uploaded resume', ${content}, 'resume-review')`;
 
         res.json({
-            sucess: true,
+            success: true,
             content: content
         });
 
     }catch(error){
         console.log(error.message);
         res.json({
-            sucess: false,
+            success: false,
             message: error.message
         });
     }
