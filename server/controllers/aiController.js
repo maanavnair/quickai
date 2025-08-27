@@ -252,7 +252,7 @@ export const resumeReview = async (req, res) => {
             });
         }
 
-        if(resume.size() > 5 * 1024 * 1024){
+        if(resume.size > 5 * 1024 * 1024){
             return res.json({
                 success: false,
                 message: 'Resume file size exceeds allowed size (5MB).'
