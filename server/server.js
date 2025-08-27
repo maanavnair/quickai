@@ -11,7 +11,11 @@ const app = express();
 
 await connectCloudinary();
 
-app.use(cors());
+app.use(cors({
+  origin: "https://quickai-iz8zyldmr-maanavnair20043gmailcoms-projects.vercel.app", 
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true
+}));
 app.use(express.json());
 app.use(clerkMiddleware());
 
