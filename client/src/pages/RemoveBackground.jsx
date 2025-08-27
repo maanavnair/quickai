@@ -108,6 +108,7 @@ const RemoveBackground = () => {
               <img 
                 src={content}
                 alt='image'
+                className='mt-3 w-full h-full'
               />
             )
           }
